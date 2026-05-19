@@ -13,6 +13,7 @@ LOG_DIR="/var/log/monero"
 SERVICE_FILE="/etc/systemd/system/monerod.service"
 ENV_FILE="${ENV_FILE:-/var/www/eckmar/.env}"
 MONERO_HOST="${MONERO_HOST:-127.0.0.1}"
+# This script configures monerod daemon RPC (default 18081), not wallet-rpc.
 MONERO_PORT="${MONERO_PORT:-18081}"
 MONERO_RPC_USER="${MONERO_RPC_USER:-}"
 MONERO_RPC_PASSWORD="${MONERO_RPC_PASSWORD:-}"

@@ -58,7 +58,8 @@ DB_PASSWORD="${DB_PASSWORD:-eckmar_pass}"
 DB_ROOT_PASSWORD="${DB_ROOT_PASSWORD:-}"
 ADMIN_XMR_WALLET="${ADMIN_XMR_WALLET:-}"
 MONERO_HOST="${MONERO_HOST:-127.0.0.1}"
-MONERO_PORT="${MONERO_PORT:-18082}"
+# Default MONERO_PORT follows existing marketplace wallet RPC setting.
+MONERO_PORT="${MONERO_PORT:-28091}"
 MONERO_RPC_USER="${MONERO_RPC_USER:-}"
 MONERO_RPC_PASSWORD="${MONERO_RPC_PASSWORD:-}"
 MONERO_ADMIN_WALLET="${MONERO_ADMIN_WALLET:-}"
@@ -190,6 +191,10 @@ grep -q '^MONERO_PORT=' .env && sed -i "s#^MONERO_PORT=.*#MONERO_PORT=${MONERO_P
 grep -q '^MONERO_RPC_USER=' .env && sed -i "s#^MONERO_RPC_USER=.*#MONERO_RPC_USER=${MONERO_RPC_USER}#" .env || echo "MONERO_RPC_USER=${MONERO_RPC_USER}" >> .env
 grep -q '^MONERO_RPC_PASSWORD=' .env && sed -i "s#^MONERO_RPC_PASSWORD=.*#MONERO_RPC_PASSWORD=${MONERO_RPC_PASSWORD}#" .env || echo "MONERO_RPC_PASSWORD=${MONERO_RPC_PASSWORD}" >> .env
 grep -q '^MONERO_ADMIN_WALLET=' .env && sed -i "s#^MONERO_ADMIN_WALLET=.*#MONERO_ADMIN_WALLET=${MONERO_ADMIN_WALLET}#" .env || echo "MONERO_ADMIN_WALLET=${MONERO_ADMIN_WALLET}" >> .env
+
+if [ -f public/robots.txt ]; then
+    sed -i "s#^Sitemap: .*#Sitemap: ${APP_URL%/}/sitemap.xml#" public/robots.txt
+fi
 
 banner "Installing PHP dependencies"
 composer install --no-dev --optimize-autoloader --no-interaction
