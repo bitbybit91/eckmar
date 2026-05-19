@@ -19,5 +19,9 @@ mix.sass('resources/assets/sass/app.scss', 'public/css');
 mix.override((config) => {
     const blockedPluginNames = new Set(['WebpackBar', 'WebpackBarPlugin']);
 
-    config.plugins = config.plugins.filter((plugin) => !blockedPluginNames.has(plugin.constructor?.name));
+    config.plugins = config.plugins.filter((plugin) => {
+        const pluginName = plugin && plugin.constructor ? plugin.constructor.name : '';
+
+        return !blockedPluginNames.has(pluginName);
+    });
 });
