@@ -16,3 +16,6 @@ let mix = require('laravel-mix');
 
 mix.sass('resources/assets/sass/app.scss', 'public/css');
 
+mix.override((config) => {
+    config.plugins = config.plugins.filter((plugin) => !/WebpackBar/.test(plugin.constructor.name));
+});
