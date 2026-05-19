@@ -21,6 +21,6 @@ mix.override((config) => {
     const blockedPluginNames = new Set(['WebpackBar', 'WebpackBarPlugin']);
 
     config.plugins = (config.plugins || []).filter((plugin) => {
-        return !blockedPluginNames.has(plugin.constructor.name);
+        return !plugin.constructor || !blockedPluginNames.has(plugin.constructor.name);
     });
 });
