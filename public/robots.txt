@@ -5,4 +5,4 @@ Disallow: /profile
 Disallow: /messages
 Disallow: /purchases
 Allow: /
-Sitemap: /sitemap.xml
+Sitemap: https://example.com/sitemap.xml

@@ -81,7 +81,7 @@ banner "Installing Nginx"
 apt-get install -y nginx
 
 banner "Installing PHP 7.4 and required extensions"
-apt-get install -y php7.4-fpm php7.4-mysql php7.4-mbstring php7.4-xml php7.4-gmp php7.4-curl php7.4-gd php7.4-zip php7.4-bcmath php7.4-json php7.4-tokenizer || true
+apt-get install -y php7.4-fpm php7.4-mysql php7.4-mbstring php7.4-xml php7.4-gmp php7.4-curl php7.4-gd php7.4-zip php7.4-bcmath php7.4-json php7.4-tokenizer
 if ! apt-get install -y php7.4-xmlrpc; then
     warn "php7.4-xmlrpc unavailable in current apt sources, adding ppa:ondrej/php"
     add-apt-repository -y ppa:ondrej/php

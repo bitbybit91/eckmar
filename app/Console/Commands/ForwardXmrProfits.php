@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 class ForwardXmrProfits extends Command
 {
     const ATOMIC_UNITS_PER_XMR = 1000000000000;
+    const MAX_ERROR_MESSAGE_LENGTH = 65535;
 
     /**
      * The name and signature of the console command.
@@ -90,9 +91,10 @@ class ForwardXmrProfits extends Command
             ]);
 
             try {
+                $forwardAmountXmr = $forwardAmountAtomic / self::ATOMIC_UNITS_PER_XMR;
                 $result = $walletRpc->transfer([
                     'address' => $walletAddress,
-                    'amount' => $forwardAmountAtomic / self::ATOMIC_UNITS_PER_XMR,
+                    'amount' => $forwardAmountXmr,
                     'priority' => 1,
                 ]);
 
@@ -112,7 +114,7 @@ class ForwardXmrProfits extends Command
                 $this->info('XMR profit forwarding completed. TX: ' . $txHash);
             } catch (\Exception $exception) {
                 $transfer->status = 'failed';
-                $transfer->error_message = mb_substr($exception->getMessage(), 0, 65535);
+                $transfer->error_message = mb_substr($exception->getMessage(), 0, self::MAX_ERROR_MESSAGE_LENGTH);
                 $transfer->save();
 
                 Log::error('XMR profit forwarding transfer failed.', [
