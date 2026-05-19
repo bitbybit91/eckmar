@@ -61,6 +61,49 @@
                 @include('featuredproducts::frontpagedisplay')
             @endisModuleEnabled
 
+            @isModuleEnabled('Advertising')
+            {{-- Advertiser Banners --}}
+            <div class="row mt-3">
+                <div class="col-12">
+                    <h5>
+                        Advertiser Banners
+                        @php
+                            $adBanners     = \Modules\Advertising\Models\AdBanner::active()->get();
+                            $activeBannerCount = $adBanners->count();
+                            $maxBanners    = (int) config('advertising.max_banners', 10);
+                        @endphp
+                        @if($activeBannerCount < $maxBanners)
+                            <span class="badge slot-counter slot-counter--available">
+                                {{ $maxBanners - $activeBannerCount }} slot(s) available
+                            </span>
+                        @else
+                            <span class="badge slot-counter slot-counter--full">All slots full</span>
+                        @endif
+                    </h5>
+                    <div class="ad-slots-grid mt-2 mb-3">
+                        @forelse($adBanners as $adBanner)
+                            <div class="ad-banner-slot">
+                                <a href="{{ $adBanner->destination_url }}" target="_blank" rel="noopener noreferrer">
+                                    <img src="{{ asset('storage/' . $adBanner->filename) }}"
+                                         alt="{{ $adBanner->alt_text }}"
+                                         title="{{ $adBanner->title_text }}"
+                                         width="{{ config('advertising.banner_width', 468) }}"
+                                         height="{{ config('advertising.banner_height', 60) }}">
+                                </a>
+                            </div>
+                        @empty
+                            <a href="{{ route('ads.order.banner') }}" style="text-decoration:none">
+                                <div class="ad-banner-placeholder">
+                                    468×60 banner — ${{ number_format(config('advertising.banner_price_usd', 200), 0) }}/month
+                                </div>
+                            </a>
+                        @endforelse
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            @endisModuleEnabled
+
             <div class="row mt-4">
 
                 <div class="col-md-4">

@@ -41,6 +41,13 @@
     @endisModuleEnabled
     @endhasAccess
 
+    @isModuleEnabled('Advertising')
+    <a class="nav-link" href="{{ route('admin.ads.dashboard') }}">
+        <i class="fas fa-ad mr-2"></i>
+        Advertising
+    </a>
+    @endisModuleEnabled
+
     @hasAccess('purchases')
     <a class="nav-link @isroute('admin.purchases') active @endisroute @isroute('admin.purchase') active @endisroute" href="{{ route('admin.purchases') }}">
         <i class="fas fa-shopping-cart mr-2"></i>

@@ -1,0 +1,93 @@
+// Ad slot grid
+.ad-slots-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ad-banner-slot {
+  border: 1px solid $mgray;
+
+  &:hover {
+    border-color: $xmr-orange;
+  }
+}
+
+.ad-banner-placeholder {
+  width: 468px;
+  height: 60px;
+  border: 2px dashed $mgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $mgray;
+  font-size: 0.85rem;
+}
+
+.slot-counter {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.slot-counter--available {
+  background: $success;
+  color: #fff;
+}
+
+.slot-counter--full {
+  background: $danger;
+  color: #fff;
+}
+
+// XMR payment card
+.xmr-payment-card {
+  border-left: 4px solid $xmr-orange;
+  padding: 1.5rem;
+  background: darken($body-bg, 3%);
+}
+
+.xmr-amount-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: $xmr-orange;
+  font-family: $font-family-monospace;
+}
+
+.wallet-address-code {
+  word-break: break-all;
+  user-select: all;
+  cursor: text;
+}
+
+// Pricing table
+.ad-pricing-card {
+  border: 1px solid rgba($xmr-orange, 0.4);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.ad-pricing-card--featured {
+  border-color: $xmr-orange;
+}
+
+// Status badges
+.badge-pending {
+  @extend .badge-warning;
+}
+
+.badge-active {
+  @extend .badge-success;
+}
+
+.badge-expired {
+  @extend .badge-secondary;
+}
+
+.badge-rejected {
+  @extend .badge-danger;
+}
+
+.badge-confirmed {
+  @extend .badge-success;
+}
