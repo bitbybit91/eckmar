@@ -118,8 +118,8 @@ fi
 chmod 600 "$MYSQL_DEFAULTS_FILE"
 
 mysql --defaults-file="$MYSQL_DEFAULTS_FILE" -e "CREATE DATABASE IF NOT EXISTS \\`${DB_NAME}\\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql --defaults-file="$MYSQL_DEFAULTS_FILE" -e "CREATE USER IF NOT EXISTS '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}';"
-mysql --defaults-file="$MYSQL_DEFAULTS_FILE" -e "ALTER USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}';"
+mysql --defaults-file="$MYSQL_DEFAULTS_FILE" -e "CREATE USER IF NOT EXISTS '${DB_USER}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${DB_PASSWORD}';"
+mysql --defaults-file="$MYSQL_DEFAULTS_FILE" -e "ALTER USER '${DB_USER}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${DB_PASSWORD}';"
 mysql --defaults-file="$MYSQL_DEFAULTS_FILE" -e "GRANT ALL PRIVILEGES ON \\`${DB_NAME}\\`.* TO '${DB_USER}'@'localhost'; FLUSH PRIVILEGES;"
 
 banner "Installing Elasticsearch 7.x"
@@ -145,8 +145,8 @@ sed -i 's/^supervised .*/supervised systemd/' /etc/redis/redis.conf
 systemctl enable redis-server
 systemctl restart redis-server
 
-banner "Installing Node.js 16.x"
-curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+banner "Installing Node.js 18.x"
+curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 apt-get install -y nodejs
 
 banner "Installing Composer 2.x"
@@ -179,33 +179,48 @@ if [ ! -f .env ]; then
     cp .env.example .env
 fi
 
-sed -i "s#^APP_ENV=.*#APP_ENV=${APP_ENV}#" .env
-sed -i "s#^APP_URL=.*#APP_URL=${APP_URL}#" .env
-sed -i "s#^DB_DATABASE=.*#DB_DATABASE=${DB_NAME}#" .env
-sed -i "s#^DB_USERNAME=.*#DB_USERNAME=${DB_USER}#" .env
-sed -i "s#^DB_PASSWORD=.*#DB_PASSWORD=${DB_PASSWORD}#" .env
+set_env() {
+    local key="$1" val="$2"
+    if grep -q "^${key}=" .env; then
+        sed -i "s#^${key}=.*#${key}=${val}#" .env
+    else
+        echo "${key}=${val}" >> .env
+    fi
+}
 
-grep -q '^ADMIN_XMR_WALLET=' .env && sed -i "s#^ADMIN_XMR_WALLET=.*#ADMIN_XMR_WALLET=${ADMIN_XMR_WALLET}#" .env || echo "ADMIN_XMR_WALLET=${ADMIN_XMR_WALLET}" >> .env
-grep -q '^MONERO_HOST=' .env && sed -i "s#^MONERO_HOST=.*#MONERO_HOST=${MONERO_HOST}#" .env || echo "MONERO_HOST=${MONERO_HOST}" >> .env
-grep -q '^MONERO_PORT=' .env && sed -i "s#^MONERO_PORT=.*#MONERO_PORT=${MONERO_PORT}#" .env || echo "MONERO_PORT=${MONERO_PORT}" >> .env
-grep -q '^MONERO_RPC_USER=' .env && sed -i "s#^MONERO_RPC_USER=.*#MONERO_RPC_USER=${MONERO_RPC_USER}#" .env || echo "MONERO_RPC_USER=${MONERO_RPC_USER}" >> .env
-grep -q '^MONERO_RPC_PASSWORD=' .env && sed -i "s#^MONERO_RPC_PASSWORD=.*#MONERO_RPC_PASSWORD=${MONERO_RPC_PASSWORD}#" .env || echo "MONERO_RPC_PASSWORD=${MONERO_RPC_PASSWORD}" >> .env
-grep -q '^MONERO_ADMIN_WALLET=' .env && sed -i "s#^MONERO_ADMIN_WALLET=.*#MONERO_ADMIN_WALLET=${MONERO_ADMIN_WALLET}#" .env || echo "MONERO_ADMIN_WALLET=${MONERO_ADMIN_WALLET}" >> .env
+set_env APP_ENV "${APP_ENV}"
+set_env APP_URL "${APP_URL}"
+set_env DB_DATABASE "${DB_NAME}"
+set_env DB_USERNAME "${DB_USER}"
+set_env DB_PASSWORD "${DB_PASSWORD}"
+set_env ADMIN_XMR_WALLET "${ADMIN_XMR_WALLET}"
+set_env MONERO_HOST "${MONERO_HOST}"
+set_env MONERO_PORT "${MONERO_PORT}"
+set_env MONERO_RPC_USER "${MONERO_RPC_USER}"
+set_env MONERO_RPC_PASSWORD "${MONERO_RPC_PASSWORD}"
+set_env MONERO_ADMIN_WALLET "${MONERO_ADMIN_WALLET}"
 
 if [ -f public/robots.txt ]; then
     sed -i "s#^Sitemap: .*#Sitemap: ${APP_URL%/}/sitemap.xml#" public/robots.txt
 fi
 
 banner "Installing PHP dependencies"
+export COMPOSER_ALLOW_SUPERUSER=1
+composer config audit.block-insecure false
 composer install --no-dev --optimize-autoloader --no-interaction
 
 banner "Installing and building frontend assets"
+mkdir -p resources/views/modules/featuredproducts
+mkdir -p resources/views/modules/finalizeearly
 npm install
 npm run prod
 
 banner "Running Laravel setup tasks"
 php artisan key:generate --force
 php artisan migrate --force
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
 php artisan storage:link || true
 
 banner "Setting file permissions"
@@ -290,6 +305,13 @@ ufw allow 80/tcp
 ufw allow 443/tcp
 ufw --force enable
 
+banner "Setting up Monero pruned node"
+if [ -n "$ADMIN_XMR_WALLET" ]; then
+    MONERO_ADMIN_WALLET="$ADMIN_XMR_WALLET" bash scripts/setup-xmr.sh
+else
+    warn "ADMIN_XMR_WALLET not set — skipping Monero setup. Run scripts/setup-xmr.sh manually."
+fi
+
 banner "Installation complete"
 echo ""
 echo "Site URL: ${APP_URL}"
@@ -297,5 +319,5 @@ echo "Admin wallet configured: ${ADMIN_XMR_WALLET:-not set}"
 echo "Next steps:"
 echo "  1) Run scripts/debug.sh to validate services"
 echo "  2) Configure real SSL certificates (Let's Encrypt)"
-echo "  3) Run scripts/setup-xmr.sh to configure monerod"
+echo "  3) Create admin account via php artisan tinker"
 echo "  4) Configure monero-wallet-rpc for marketplace hot wallet operations"
