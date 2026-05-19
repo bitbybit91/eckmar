@@ -211,7 +211,7 @@ class XmrPriceService
             mkdir($dir, 0755, true);
         }
 
-        $fh = @fopen($this->cacheFile, 'cb');
+        $fh = @fopen($this->cacheFile, 'c+b');
 
         if ($fh === false) {
             return;

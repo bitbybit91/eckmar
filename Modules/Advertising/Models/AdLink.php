@@ -82,7 +82,7 @@ class AdLink extends Model
         $this->update([
             'status'      => 'active',
             'approved_at' => Carbon::now(),
-            'expires_at'  => Carbon::now()->addDays($months * 30),
+            'expires_at'  => Carbon::now()->addMonths($months),
         ]);
     }
 

@@ -1,3 +1,10 @@
+// Resolve theme variables. $theme-colors is defined in _variables.scss (imported before
+// this file). Bootstrap defines $body-bg, $success, and $danger.
+$mgray: map-get($theme-colors, 'mgray');
+$body-bg: #fff !default;
+$success: #28a745 !default;
+$danger:  #dc3545 !default;
+
 // Ad slot grid
 .ad-slots-grid {
   display: flex;
