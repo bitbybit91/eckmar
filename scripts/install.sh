@@ -197,7 +197,7 @@ if [ -f public/robots.txt ]; then
 fi
 
 banner "Installing PHP dependencies"
-composer install --no-dev --optimize-autoloader --no-interaction
+COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --no-interaction
 
 banner "Installing and building frontend assets"
 npm install
