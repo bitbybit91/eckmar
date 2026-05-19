@@ -20,7 +20,7 @@ mix.override((config) => {
     // WebpackBar plugin options from this Mix stack are incompatible with newer webpack ProgressPlugin schema.
     const blockedPluginNames = new Set(['WebpackBar', 'WebpackBarPlugin']);
 
-    config.plugins = config.plugins.filter((plugin) => {
+    config.plugins = (config.plugins || []).filter((plugin) => {
         return !blockedPluginNames.has(plugin.constructor.name);
     });
 });
