@@ -2,6 +2,21 @@
 
 @section('title', $category -> name . ' category')
 
+@section('seo')
+    <meta name="description" content="Browse {{ $category->name }} products on {{ config('app.name') }}.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="{{ config('app.name') }} - {{ $category->name }} category">
+    <meta property="og:description" content="Browse {{ $category->name }} products on {{ config('app.name') }}.">
+    <meta property="og:url" content="{{ request()->url() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ asset('img/product.png') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ config('app.name') }} - {{ $category->name }} category">
+    <meta name="twitter:description" content="Browse {{ $category->name }} products on {{ config('app.name') }}.">
+    <meta name="twitter:image" content="{{ asset('img/product.png') }}">
+    <link rel="canonical" href="{{ request()->url() }}">
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-md-3">

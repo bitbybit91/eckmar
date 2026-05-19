@@ -3,6 +3,21 @@
 
 @section('title','Sign in')
 
+@section('seo')
+    <meta name="description" content="Sign in to {{ config('app.name') }}.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:title" content="{{ config('app.name') }} - Sign in">
+    <meta property="og:description" content="Sign in to {{ config('app.name') }}.">
+    <meta property="og:url" content="{{ request()->url() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ asset('img/product.png') }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ config('app.name') }} - Sign in">
+    <meta name="twitter:description" content="Sign in to {{ config('app.name') }}.">
+    <meta name="twitter:image" content="{{ asset('img/product.png') }}">
+    <link rel="canonical" href="{{ request()->url() }}">
+@endsection
+
 @section('content')
 
     <div class="row mt-5 justify-content-center">

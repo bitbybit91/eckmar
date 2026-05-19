@@ -1,2 +1,9 @@
 User-agent: *
-Disallow:
+Disallow: /admin
+Disallow: /cart
+Disallow: /profile
+Disallow: /messages
+Disallow: /purchases
+Allow: /
+# Replace with your production domain (install.sh updates this automatically when APP_URL is set).
+Sitemap: https://example.com/sitemap.xml

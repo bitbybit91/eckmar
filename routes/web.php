@@ -52,4 +52,4 @@ Route::get('vendor/{user}/feedback', 'IndexController@vendorsFeedbacks') -> name
 
 Route::post('search','SearchController@search')->name('search');
 Route::get('search','SearchController@searchShow')->name('search.show');
-
+Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap');
