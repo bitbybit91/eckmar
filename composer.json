@@ -76,7 +76,28 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "kylekatarnls/update-helper": false
+        }
+    },
+    "audit": {
+        "block-insecure": false,
+        "ignore": [
+            "PKSA-z3gr-8qht-p93v",
+            "PKSA-fndg-qryc-dyc9",
+            "PKSA-nyyp-2pk1-frkz",
+            "PKSA-g6p7-7rfc-zbp2",
+            "PKSA-csyb-yc4p-mnbs",
+            "PKSA-smrh-yx37-92ws",
+            "PKSA-zh4j-by9m-7mz8",
+            "PKSA-km2b-zc3b-mjm3",
+            "PKSA-4p7m-np8m-fq35",
+            "PKSA-t5xz-td8w-f35v",
+            "PKSA-jsh4-f6tg-bwyq",
+            "PKSA-mnsd-qtjt-pgcq",
+            "PKSA-4s4z-t146-6123"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true

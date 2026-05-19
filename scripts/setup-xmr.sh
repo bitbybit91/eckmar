@@ -1,11 +1,27 @@
 #!/bin/bash
 set -euo pipefail
 
-MONERO_VERSION="${MONERO_VERSION:-v0.18.3.3}"
+# Auto-detect latest Monero release from GitHub API tag name.
+# Monero does NOT publish binaries as GitHub release assets — hosted on downloads.getmonero.org.
+_detect_latest_monero_version() {
+    curl -fsSL https://api.github.com/repos/monero-project/monero/releases/latest \
+        | grep '"tag_name"' | cut -d'"' -f4
+}
+
+MONERO_VERSION="${MONERO_VERSION:-}"
+if [ -z "$MONERO_VERSION" ]; then
+    echo "Detecting latest Monero release..."
+    MONERO_VERSION="$(_detect_latest_monero_version)"
+    if [ -z "$MONERO_VERSION" ]; then
+        echo "ERROR: Could not detect latest Monero version. Set MONERO_VERSION manually."
+        exit 1
+    fi
+    echo "Latest Monero release: $MONERO_VERSION"
+fi
+
 MONERO_ARCHIVE="monero-linux-x64-${MONERO_VERSION}.tar.bz2"
-MONERO_RELEASE_BASE_URL="https://github.com/monero-project/monero/releases/download/${MONERO_VERSION}"
-MONERO_DOWNLOAD_URL="${MONERO_RELEASE_BASE_URL}/${MONERO_ARCHIVE}"
-MONERO_HASHES_URL="${MONERO_RELEASE_BASE_URL}/hashes.txt"
+MONERO_DOWNLOAD_URL="https://downloads.getmonero.org/cli/${MONERO_ARCHIVE}"
+MONERO_HASHES_URL="https://getmonero.org/downloads/hashes.txt"
 INSTALL_DIR="/opt/monero"
 CONFIG_DIR="/etc/monero"
 DATA_DIR="/var/lib/monero"
@@ -37,6 +53,7 @@ chown -R monero:monero "$DATA_DIR" "$LOG_DIR"
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
 
+echo "Downloading $MONERO_DOWNLOAD_URL ..."
 curl -fsSL "$MONERO_DOWNLOAD_URL" -o "$TMP_DIR/$MONERO_ARCHIVE"
 curl -fsSL "$MONERO_HASHES_URL" -o "$TMP_DIR/hashes.txt"
 
@@ -45,6 +62,8 @@ ACTUAL_HASH="$(sha256sum "$TMP_DIR/$MONERO_ARCHIVE" | awk '{print $1}')"
 
 if [ -z "$EXPECTED_HASH" ] || [ "$EXPECTED_HASH" != "$ACTUAL_HASH" ]; then
     echo "SHA256 verification failed for ${MONERO_ARCHIVE}"
+    echo "Expected: $EXPECTED_HASH"
+    echo "Actual:   $ACTUAL_HASH"
     exit 1
 fi
 
