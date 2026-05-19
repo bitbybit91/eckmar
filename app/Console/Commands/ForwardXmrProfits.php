@@ -36,6 +36,7 @@ class ForwardXmrProfits extends Command
         $walletAddress = trim((string) config('marketplace.admin_xmr_wallet'));
         $forwardPercent = max(0, min(100, intval(config('marketplace.admin_fee_forward_percent', 100))));
         $minBalance = intval(config('marketplace.admin_forward_min_balance', self::ATOMIC_UNITS_PER_XMR));
+        $transferPriority = max(0, min(3, intval(env('MONERO_TRANSFER_PRIORITY', 1))));
 
         if ($walletAddress === '') {
             Log::warning('XMR profit forwarding skipped: ADMIN_XMR_WALLET is not configured.');
@@ -95,7 +96,7 @@ class ForwardXmrProfits extends Command
                 $result = $walletRpc->transfer([
                     'address' => $walletAddress,
                     'amount' => $forwardAmountXmr,
-                    'priority' => 1,
+                    'priority' => $transferPriority,
                 ]);
 
                 $txHash = isset($result['tx_hash']) ? $result['tx_hash'] : '';

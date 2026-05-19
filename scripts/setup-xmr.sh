@@ -49,7 +49,7 @@ if [ -z "$EXPECTED_HASH" ] || [ "$EXPECTED_HASH" != "$ACTUAL_HASH" ]; then
 fi
 
 tar -xjf "$TMP_DIR/$MONERO_ARCHIVE" -C "$TMP_DIR"
-# Release archive uses "x64" while extracted folder uses "x86_64-linux-gnu" naming.
+# The archive filename contains "x64", while the extracted directory name uses "x86_64-linux-gnu".
 EXTRACTED_DIR="$(find "$TMP_DIR" -maxdepth 1 -type d -name "monero-x86_64-linux-gnu-*" | head -n1)"
 if [ -z "$EXTRACTED_DIR" ]; then
     echo "Unable to locate extracted Monero directory."

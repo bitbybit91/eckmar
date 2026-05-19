@@ -58,7 +58,7 @@ DB_PASSWORD="${DB_PASSWORD:-eckmar_pass}"
 DB_ROOT_PASSWORD="${DB_ROOT_PASSWORD:-}"
 ADMIN_XMR_WALLET="${ADMIN_XMR_WALLET:-}"
 MONERO_HOST="${MONERO_HOST:-127.0.0.1}"
-# MONERO_PORT here is the marketplace wallet-rpc port used by the application.
+# MONERO_PORT here is the marketplace wallet-rpc port used by the application (setup-xmr.sh uses daemon RPC 18081).
 MONERO_PORT="${MONERO_PORT:-28091}"
 MONERO_RPC_USER="${MONERO_RPC_USER:-}"
 MONERO_RPC_PASSWORD="${MONERO_RPC_PASSWORD:-}"

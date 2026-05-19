@@ -197,6 +197,7 @@ A transfer log is written to `admin_profit_transfers`.
 | `MONERO_HOST`, `MONERO_PORT` | Monero daemon or wallet RPC endpoint |
 | `MONERO_USERNAME`, `MONERO_PASSWORD` | Legacy Monero wallet RPC credentials |
 | `MONERO_RPC_USER`, `MONERO_RPC_PASSWORD` | Monero wallet RPC credentials |
+| `MONERO_TRANSFER_PRIORITY` | Monero transfer priority (0-3) used for profit forwarding |
 | `MONERO_ADMIN_WALLET` | Monero node setup/admin wallet helper variable |
 | `REDIS_HOST`, `REDIS_PORT` | Redis connection |
 
