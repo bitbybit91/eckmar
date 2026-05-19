@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\CompletePurchaseCommand;
 use App\Console\Commands\DeleteOldMessages;
+use App\Console\Commands\ExpireAdsCommand;
 use App\Console\Commands\ReleasePurchasesCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -32,6 +33,7 @@ class Kernel extends ConsoleKernel
 
     $schedule -> command(CompletePurchaseCommand::class) -> days(config('marketplace.days_complete'));
     $schedule -> command(ReleasePurchasesCommand::class, ['days' => config('marketplace.days_old_purchases')])->daily();
+    $schedule -> command(ExpireAdsCommand::class)->hourly();
 
     }
 

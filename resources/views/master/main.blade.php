@@ -32,5 +32,11 @@
 
 </div>
 
+@isModuleEnabled('Advertising')
+@include('includes.footer')
+@endisModuleEnabled
+
+@stack('scripts')
+
 </body>
 </html>
