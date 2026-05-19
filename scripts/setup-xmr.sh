@@ -51,6 +51,10 @@ fi
 tar -xjf "$TMP_DIR/$MONERO_ARCHIVE" -C "$TMP_DIR"
 # Release archive uses "x64" while extracted folder uses "x86_64-linux-gnu" naming.
 EXTRACTED_DIR="$(find "$TMP_DIR" -maxdepth 1 -type d -name "monero-x86_64-linux-gnu-*" | head -n1)"
+if [ -z "$EXTRACTED_DIR" ]; then
+    echo "Unable to locate extracted Monero directory."
+    exit 1
+fi
 cp -f "$EXTRACTED_DIR/monerod" "$INSTALL_DIR/monerod"
 chmod 755 "$INSTALL_DIR/monerod"
 
