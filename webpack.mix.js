@@ -17,6 +17,7 @@ let mix = require('laravel-mix');
 mix.sass('resources/assets/sass/app.scss', 'public/css');
 
 mix.override((config) => {
+    // WebpackBar plugin options from this Mix stack are incompatible with newer webpack ProgressPlugin schema.
     const blockedPluginNames = new Set(['WebpackBar', 'WebpackBarPlugin']);
 
     config.plugins = config.plugins.filter((plugin) => {
