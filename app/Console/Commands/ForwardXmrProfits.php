@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Log;
 
 class ForwardXmrProfits extends Command
 {
+    const ATOMIC_UNITS_PER_XMR = 1000000000000;
+
     /**
      * The name and signature of the console command.
      *
@@ -32,7 +34,7 @@ class ForwardXmrProfits extends Command
     {
         $walletAddress = trim((string) config('marketplace.admin_xmr_wallet'));
         $forwardPercent = max(0, min(100, intval(config('marketplace.admin_fee_forward_percent', 100))));
-        $minBalance = intval(config('marketplace.admin_forward_min_balance', 1000000000000));
+        $minBalance = intval(config('marketplace.admin_forward_min_balance', self::ATOMIC_UNITS_PER_XMR));
 
         if ($walletAddress === '') {
             Log::warning('XMR profit forwarding skipped: ADMIN_XMR_WALLET is not configured.');
@@ -90,7 +92,7 @@ class ForwardXmrProfits extends Command
             try {
                 $result = $walletRpc->transfer([
                     'address' => $walletAddress,
-                    'amount' => $forwardAmountAtomic / 1000000000000,
+                    'amount' => $forwardAmountAtomic / self::ATOMIC_UNITS_PER_XMR,
                     'priority' => 1,
                 ]);
 
