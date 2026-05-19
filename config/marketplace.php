@@ -34,6 +34,21 @@ return [
     'vendor_fee' => env('VENDOR_FEE', 1),
 
     /**
+     * Admin wallet address for receiving market fee and vendor bond profits
+     */
+    'admin_xmr_wallet' => env('ADMIN_XMR_WALLET', ''),
+
+    /**
+     * Percentage of market fee profits to forward to admin wallet (0-100)
+     */
+    'admin_fee_forward_percent' => env('ADMIN_FEE_FORWARD_PERCENT', 100),
+
+    /**
+     * Minimum XMR balance (in atomic units piconero) before auto-forwarding
+     */
+    'admin_forward_min_balance' => env('ADMIN_FORWARD_MIN_BALANCE', 1000000000000),
+
+    /**
      * After how many negative feedback should vendor get "Deal with caution tag"
      */
     'vendor_dwc_tag_count' => 1,

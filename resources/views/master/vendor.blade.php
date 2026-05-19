@@ -2,6 +2,21 @@
 
 @section('title','Vendor - ' . $vendor -> username )
 
+@section('seo')
+    <meta name="description" content="View vendor profile for {{ $vendor->username }} on {{ config('app.name') }}.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="{{ config('app.name') }} - Vendor {{ $vendor->username }}">
+    <meta property="og:description" content="View vendor profile for {{ $vendor->username }} on {{ config('app.name') }}.">
+    <meta property="og:url" content="{{ request()->url() }}">
+    <meta property="og:type" content="profile">
+    <meta property="og:image" content="{{ asset('img/product.png') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ config('app.name') }} - Vendor {{ $vendor->username }}">
+    <meta name="twitter:description" content="View vendor profile for {{ $vendor->username }} on {{ config('app.name') }}.">
+    <meta name="twitter:image" content="{{ asset('img/product.png') }}">
+    <link rel="canonical" href="{{ request()->url() }}">
+@endsection
+
 @section('content')
     {{-- Breadcrumbs --}}
     <nav class="main-breadcrumb" aria-label="breadcrumb">

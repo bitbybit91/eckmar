@@ -1,6 +1,21 @@
 @extends('master.main')
 
-@section('title','Home Page')
+@section('title','Search results')
+
+@section('seo')
+    <meta name="description" content="Search results for {{ $query }} on {{ config('app.name') }}.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="{{ config('app.name') }} - Search: {{ $query }}">
+    <meta property="og:description" content="Search results for {{ $query }} on {{ config('app.name') }}.">
+    <meta property="og:url" content="{{ request()->url() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ asset('img/product.png') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ config('app.name') }} - Search: {{ $query }}">
+    <meta name="twitter:description" content="Search results for {{ $query }} on {{ config('app.name') }}.">
+    <meta name="twitter:image" content="{{ asset('img/product.png') }}">
+    <link rel="canonical" href="{{ request()->url() }}">
+@endsection
 
 @section('content')
 

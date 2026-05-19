@@ -14,6 +14,23 @@
         <title>{{config('app.name')}}</title>
     @endif
 
+    @hasSection('seo')
+        @yield('seo')
+    @else
+        <meta name="description" content="{{ config('app.name') }} marketplace">
+        <meta name="robots" content="index, follow">
+        <meta property="og:title" content="{{ config('app.name') }}">
+        <meta property="og:description" content="{{ config('app.name') }} marketplace">
+        <meta property="og:url" content="{{ request()->url() }}">
+        <meta property="og:type" content="website">
+        <meta property="og:image" content="{{ asset('img/product.png') }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ config('app.name') }}">
+        <meta name="twitter:description" content="{{ config('app.name') }} marketplace">
+        <meta name="twitter:image" content="{{ asset('img/product.png') }}">
+        <link rel="canonical" href="{{ request()->url() }}">
+    @endif
+
 </head>
 <body class="pb-4">
 @include('master.navbar')

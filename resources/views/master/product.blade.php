@@ -2,6 +2,23 @@
 
 @section('title','Product - ' . $product -> name )
 
+@section('seo')
+    <meta name="description" content="{{ str_limit(strip_tags($product->description), 150) }}">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="{{ config('app.name') }} - {{ $product->name }}">
+    <meta property="og:description" content="{{ str_limit(strip_tags($product->description), 150) }}">
+    <meta property="og:url" content="{{ request()->url() }}">
+    <meta property="og:type" content="product">
+    <meta property="og:image" content="{{ asset('storage/' . $product->frontImage()->image) }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ config('app.name') }} - {{ $product->name }}">
+    <meta name="twitter:description" content="{{ str_limit(strip_tags($product->description), 150) }}">
+    <meta name="twitter:image" content="{{ asset('storage/' . $product->frontImage()->image) }}">
+    <meta name="product:price:amount" content="{{ number_format($product->price_from, 2, '.', '') }}">
+    <meta name="product:price:currency" content="USD">
+    <link rel="canonical" href="{{ request()->url() }}">
+@endsection
+
 @section('content')
 
 

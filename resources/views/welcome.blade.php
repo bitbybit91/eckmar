@@ -2,6 +2,21 @@
 
 @section('title','Home Page')
 
+@section('seo')
+    <meta name="description" content="{{ config('app.name') }} is a cryptocurrency marketplace for secure buying and selling.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="{{ config('app.name') }} - Home">
+    <meta property="og:description" content="{{ config('app.name') }} is a cryptocurrency marketplace for secure buying and selling.">
+    <meta property="og:url" content="{{ request()->url() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ asset('img/product.png') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ config('app.name') }} - Home">
+    <meta name="twitter:description" content="{{ config('app.name') }} is a cryptocurrency marketplace for secure buying and selling.">
+    <meta name="twitter:image" content="{{ asset('img/product.png') }}">
+    <link rel="canonical" href="{{ request()->url() }}">
+@endsection
+
 @section('content')
 
     {{--@include('includes.search')--}}

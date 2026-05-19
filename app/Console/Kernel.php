@@ -32,6 +32,7 @@ class Kernel extends ConsoleKernel
 
     $schedule -> command(CompletePurchaseCommand::class) -> days(config('marketplace.days_complete'));
     $schedule -> command(ReleasePurchasesCommand::class, ['days' => config('marketplace.days_old_purchases')])->daily();
+    $schedule->command('marketplace:forward-xmr-profits')->daily();
 
     }
 
